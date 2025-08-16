@@ -1,11 +1,18 @@
-from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
 
 
 def test():
-    print(get_files_info("calculator", "."))
-    print(get_files_info("calculator", "pkg"))
-    print(get_files_info("calculator", "/bin"))
-    print(get_files_info("calculator", "../"))
+    print("Main.py: \n")
+    print(get_file_content("calculator", "main.py"))
+
+    print("pkg/calculator.py\n")
+    print(get_file_content("calculator", "pkg/calculator.py"))
+
+    print("/bin attempt. Should give an error.\n")
+    print(get_file_content("calculator", "/bin/cat"))
+
+    print("Non existant file\n")
+    print(get_file_content("calculator", "pkg/does_not_exist.py"))
 
 
 if __name__ == "__main__":
