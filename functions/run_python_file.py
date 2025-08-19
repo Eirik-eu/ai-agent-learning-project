@@ -18,8 +18,6 @@ def run_python_file(working_directory, file_path, args=[]):
         result = subprocess.run(["python", full_path, *args], timeout=5, capture_output=True, text=True, cwd=abs_working_dir)
         if result.returncode != 0:
             return f"STDOUT: {result.stdout}\nSTDERR: {result.stderr}. Process exited with code {result.returncode}"
-        if result.stdout == "":
-            return "No output produced."
         return f"STDOUT: {result.stdout}\nSTDERR: {result.stderr}"
     except Exception as e:
         return f"Error: executing Python file: {e}"

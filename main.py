@@ -7,6 +7,7 @@ from functions.get_files_info import schema_get_files_info
 from functions.get_file_content import schema_get_file_content
 from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
+from functions.call_function import call_function
 
 
 def main():
@@ -56,17 +57,21 @@ def main():
         ),
     )
 
+    verbose = False
+    if len(sys.argv) == 3:
+            if sys.argv[2] == "--verbose":
+                 verbose = True
+
     prompt_tokens = response.usage_metadata.prompt_token_count
     response_tokens = response.usage_metadata.candidates_token_count
 
-    if len(sys.argv) == 3:
-        if sys.argv[2] == "--verbose":
-            print(f"User prompt: {user_prompt}")    
-            print(f"Prompt tokens: {prompt_tokens}")
-            print(f"Response tokens: {response_tokens}")
+    if verbose:
+        print("Prompt tokens:", prompt_tokens)
+        print("Response tokens:", response_tokens)
 
     if response.function_calls:
-        print(f"Calling function: {response.function_calls[0].name}({response.function_calls[0].args})")
+        function_call_result = call_function(response.function_calls[0], verbose)
+        print(f"-> {function_call_result.parts[0].function_response.response}")
     else:
         print(response.text)
     
